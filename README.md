@@ -1,12 +1,10 @@
-# Native iOS Nabto Edge Webview Control App
+# Native iOS Nabto Edge WebRTC
 
-Full example application showing how to display a website from a Nabto Edge enabled webserver device using TCP tunnelling and the Nabto Edge Client SDK for iOS
-
-Precompiled version is not yet available.
+Example application that shows how you can use WebRTC with the Nabto Edge platform.
 
 ## Building
 
-The app installs dependencies through Cocoapod, so to build and run, perform the following steps:
+The app installs dependencies through Cocoapods, so to build and run, perform the following steps:
 
 1. Install dependencies: `$ pod install` (see https://www.cocoapods.org for info on installation of the pod tool).
 
