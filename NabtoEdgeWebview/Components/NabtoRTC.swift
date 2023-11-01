@@ -1,8 +1,8 @@
 //
-//  WebRTCClient.swift
+//  NabtoRTCComponent.swift
 //  NabtoEdgeWebview
 //
-//  Created by Ahmad Saleh on 26/10/2023.
+//  Created by Ahmad Saleh on 01/11/2023.
 //  Copyright © 2023 Nabto. All rights reserved.
 //
 
@@ -51,8 +51,6 @@ fileprivate struct SDP: Codable {
 }
 
 final class NabtoRTC: NSObject {
-    static let shared = NabtoRTC()
-    
     private static let factory: RTCPeerConnectionFactory = {
         RTCInitializeSSL()
         let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
@@ -77,7 +75,7 @@ final class NabtoRTC: NSObject {
     
     private var remoteVideoTrack: RTCVideoTrack?
     
-    override private init() {
+    override init() {
         let config = RTCConfiguration()
         config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
         config.sdpSemantics = .unifiedPlan
@@ -93,18 +91,13 @@ final class NabtoRTC: NSObject {
         self.peerConnection = peerConnection
     }
     
-    func createOffer() async -> RTCSessionDescription {
-        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
-        return await withCheckedContinuation { continuation in
-            self.peerConnection.offer(for: constraints) { (sdp, error) in
-                guard let sdp = sdp else { return }
-                continuation.resume(returning: sdp)
-            }
+    deinit {
+        do {
+            peerConnection.close()
+            try deviceStream.close()
+        } catch {
+            print("NabtoRTC: error in deinitialization \(error)")
         }
-    }
-    
-    func renderRemoteVideo(to renderer: RTCVideoRenderer) {
-        self.remoteVideoTrack?.add(renderer)
     }
     
     func connectToDevice(bookmark: Bookmark, renderer: RTCVideoRenderer) {
@@ -113,6 +106,16 @@ final class NabtoRTC: NSObject {
             connectInternal(conn: conn, renderer: renderer)
         } else {
             print("Could not get connection for bookmark \(bookmark)")
+        }
+    }
+    
+    private func createOffer() async -> RTCSessionDescription {
+        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        return await withCheckedContinuation { continuation in
+            self.peerConnection.offer(for: constraints) { (sdp, error) in
+                guard let sdp = sdp else { return }
+                continuation.resume(returning: sdp)
+            }
         }
     }
     
@@ -164,7 +167,6 @@ final class NabtoRTC: NSObject {
                 case .answer:
                     let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
                     let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
-                    print(answer.sdp)
                     try await self.peerConnection.setRemoteDescription(sdp)
                     break
                 case .offer:
@@ -178,7 +180,7 @@ final class NabtoRTC: NSObject {
                 }
             } catch {
                 // @TODO: Better error handling for the msg loop
-                debugPrint("MsgLoop failed: \(error)")
+                print("MsgLoop failed: \(error)")
             }
         }
         
@@ -197,7 +199,7 @@ final class NabtoRTC: NSObject {
                 try writeSignalMessage(deviceStream, msg: msg)
                 try await peerConnection.setLocalDescription(offer)
             } catch {
-                debugPrint("Failed to set local description")
+                print("Failed to set local description")
             }
         }
     }
@@ -256,31 +258,31 @@ extension RTCIceCandidate {
 // MARK: RTCPeerConnectionDelegate implementation
 extension NabtoRTC: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        debugPrint("NabtoRTC: Signaling state changed to \(stateChanged)")
+        print("NabtoRTC: Signaling state changed to \(stateChanged.description)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
-        debugPrint("NabtoRTC: New RTCMediaStream \(stream.streamId) added")
+        print("NabtoRTC: New RTCMediaStream \(stream.streamId) added")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        debugPrint("NabtoRTC: RTCMediaStream \(stream.streamId) removed")
+        print("NabtoRTC: RTCMediaStream \(stream.streamId) removed")
     }
     
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
-        debugPrint("NabtoRTC: Peer connection should negotiate")
+        print("NabtoRTC: Peer connection should negotiate")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        debugPrint("NabtoRTC: ICE connection state changed to \(newState)")
+        print("NabtoRTC: ICE connection state changed to: \(newState.description)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        debugPrint("NabtoRTC: ICE gathering state changed to \(newState)")
+        print("NabtoRTC: ICE gathering state changed to: \(newState.description)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        // debugPrint("NabtoRTC: New ICE candidate generated: \(candidate.sdp)")
+        print("NabtoRTC: New ICE candidate generated: \(candidate.sdp)")
         do {
             try writeSignalMessage(self.deviceStream, msg: SignalMessage(
                 type: .iceCandidate,
@@ -293,11 +295,11 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
-        debugPrint("NabtoRTC: ICE candidate removed")
+        print("NabtoRTC: ICE candidate removed")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen candidate: RTCDataChannel) {
-        debugPrint("NabtoRTC: Data channel opened")
+        print("NabtoRTC: Data channel opened")
     }
 }
 
@@ -320,5 +322,60 @@ extension NabtoRTC {
         data.append(encoded)
         
         try stream.write(data: data)
+    }
+}
+
+extension RTCSignalingState {
+    public var description: String {
+        return switch self {
+        case .closed:
+            "closed"
+        case .stable:
+            "stable"
+        case .haveLocalOffer:
+            "haveLocalOffer"
+        case .haveLocalPrAnswer:
+            "haveLocalPrAnswer"
+        case .haveRemoteOffer:
+            "haveRemoteOffer"
+        case .haveRemotePrAnswer:
+            "haveRemotePrAnswer"
+        }
+    }
+}
+
+extension RTCIceConnectionState {
+    public var description: String {
+        return switch self {
+        case .checking:
+            "checking"
+        case .new:
+            "new"
+        case .connected:
+            "connected"
+        case .completed:
+            "completed"
+        case .failed:
+            "failed"
+        case .disconnected:
+            "disconnected"
+        case .closed:
+            "closed"
+        case .count:
+            "count"
+        }
+    }
+}
+
+extension RTCIceGatheringState {
+    public var description: String {
+        return switch self {
+        case .complete:
+            "complete"
+        case .new:
+            "new"
+        case .gathering:
+            "gathering"
+        }
     }
 }

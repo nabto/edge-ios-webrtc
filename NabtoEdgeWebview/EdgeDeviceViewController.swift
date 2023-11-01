@@ -17,7 +17,7 @@ import WebRTC
 
 class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
     private let cborEncoder: CBOREncoder = CBOREncoder()
-    private var tunnel: TcpTunnel? = nil
+    private let rtc = NabtoRTC()
 
     @IBOutlet weak var settingsButton       : UIButton!
     @IBOutlet weak var connectingView       : UIView!
@@ -127,7 +127,8 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         self.busy = false
         
         Task {
-            NabtoRTC.shared.connectToDevice(bookmark: self.device, renderer: renderer)
+            // NabtoRTC.shared.connectToDevice(bookmark: self.device, renderer: renderer)
+            rtc.connectToDevice(bookmark: self.device, renderer: renderer)
         }
     }
 
@@ -208,11 +209,6 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         DispatchQueue.main.async {
             let banner = GrowingNotificationBanner(title: "Network connection lost", subtitle: "Please try again later", style: .warning)
             banner.show()
-            do {
-                try self.tunnel?.close()
-            } catch {
-                NSLog("Could not close tunnel in networkLost")
-            }
         }
     }
 
