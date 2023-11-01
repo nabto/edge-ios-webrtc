@@ -54,8 +54,6 @@ final class NabtoRTC: NSObject {
     static let shared = NabtoRTC()
     
     private static let factory: RTCPeerConnectionFactory = {
-        RTCSetMinDebugLogLevel(RTCLoggingSeverity.info);
-        RTCEnableMetrics()
         RTCInitializeSSL()
         let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
         let videoDecoderFactory = RTCDefaultVideoDecoderFactory()
@@ -66,7 +64,6 @@ final class NabtoRTC: NSObject {
     private let cborDecoder = CBORDecoder()
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
-    
     
     // Nabto
     private var deviceStream: NabtoEdgeClient.Stream!

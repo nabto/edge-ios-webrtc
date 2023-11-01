@@ -9,16 +9,6 @@
 import UIKit
 import Amplify
 
-// @TODO: Move this into a ViewController extensions file or similar.
-extension UIViewController {
-    func navigateToViewController(id: String, animated: Bool = true) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: id)
-        viewController.modalPresentationStyle = .fullScreen
-        self.present(viewController, animated: animated)
-    }
-}
-
 class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -62,6 +52,6 @@ class LoginViewController: UIViewController {
     // MARK: - Navigation
     
     private func navigateToOverview() {
-        self.navigateToViewController(id: "OverviewViewController")
+        self.performSegue(withIdentifier: "LoginToOverview", sender: nil)
     }
 }

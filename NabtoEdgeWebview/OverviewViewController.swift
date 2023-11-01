@@ -317,10 +317,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func handlePaired(device: Bookmark) {
-        if let controller = StoryboardHelper.viewControllerFor(device: device) {
-            controller.modalPresentationStyle = .fullScreen
-            self.present(controller, animated: true)
-        }
+        performSegue(withIdentifier: "toDeviceView", sender: device)
     }
     
     func handleUnpaired(device: Bookmark) {

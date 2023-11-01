@@ -121,7 +121,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         self.busy = true
         
         let renderer = RTCMTLVideoView(frame: self.videoScreenView.frame)
-        renderer.videoContentMode = .scaleAspectFill
+        renderer.videoContentMode = .scaleAspectFit
         
         embedView(renderer, into: self.videoScreenView)
         self.busy = false
