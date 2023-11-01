@@ -9,6 +9,7 @@
 import Foundation
 import Amplify
 import AWSPluginsCore
+import NabtoEdgeClient
 
 struct AuthTokens {
     var accessToken: String
@@ -33,6 +34,11 @@ class AuthService {
     internal static let shared = AuthService()
     
     private let jsonDecoder = JSONDecoder()
+    
+    enum AuthError: Error {
+        case failedDeviceCoapStatus(status: Int)
+        case failedDeviceCoap(nabtoError: NabtoEdgeClientError)
+    }
     
     func getTokens() async -> AuthTokens? {
         let session = try? await Amplify.Auth.fetchAuthSession()
@@ -86,6 +92,26 @@ class AuthService {
         } catch {
             print("Failed to exchange tokens with STS service: \(error)")
             return nil
+        }
+    }
+    
+    func signInDeviceWithToken(_ device: Bookmark, token: NabtoToken) async throws {
+        let conn = try EdgeConnectionManager.shared.getConnection(device)
+        let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/oauth")
+        try coap.setRequestPayload(contentFormat: 0, data: token.accessToken.data(using: .utf8)!)
+        
+        let response = try await withCheckedThrowingContinuation { continuation in
+            coap.executeAsync { err, result in
+                if err == .OK {
+                    continuation.resume(returning: result)
+                } else {
+                    continuation.resume(throwing: AuthError.failedDeviceCoap(nabtoError: err))
+                }
+            }
+        }
+        
+        if response!.status != 201 {
+            throw AuthError.failedDeviceCoapStatus(status: Int(response!.status))
         }
     }
 }

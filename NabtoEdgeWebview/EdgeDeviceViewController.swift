@@ -127,26 +127,6 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         self.busy = false
         
         Task {
-            let stsToken = await AuthService.shared.getStsTokenForDevice(self.device)
-            guard let stsToken = stsToken else {
-                // @TODO: Show an error to the user and exit the device instead of crashing
-                fatalError("Could not get STS token")
-            }
-            
-            do {
-                let conn = try EdgeConnectionManager.shared.getConnection(self.device)
-                let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/oauth")
-                try coap.setRequestPayload(contentFormat: 0, data: stsToken.accessToken.data(using: .utf8)!)
-                let result = try coap.execute()
-                if result.status != 201 {
-                    // @TODO: Show an error to the user instead of using fatalError
-                    fatalError("Could not authenticate against device.")
-                }
-            } catch {
-                // @TODO: Show an error to the user
-                debugPrint("Could not do oauth authentication against device")
-            }
-            
             NabtoRTC.shared.connectToDevice(bookmark: self.device, renderer: renderer)
         }
     }

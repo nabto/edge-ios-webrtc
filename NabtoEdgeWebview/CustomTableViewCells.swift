@@ -25,10 +25,18 @@ class DeviceRowModel {
         self.bookmark = bookmark
     }
 
-    internal func populateWithDetails() throws {
+    internal func populateWithDetails() async throws {
         do {
             let connection = try EdgeConnectionManager.shared.getConnection(self.bookmark)
             self.isOnline = true
+            
+            // @TODO: We shouldnt be querying for a new sts token every time this function is called.
+            // @TODO: Check if the connection is already paired BEFORE signing into IAM with OAuth tokens.
+            let token = await AuthService.shared.getStsTokenForDevice(self.bookmark)
+            if let token = token {
+                try await AuthService.shared.signInDeviceWithToken(self.bookmark, token: token)
+            }
+            
             let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
             if let role = user.Role {
                 self.isPaired = true
@@ -42,6 +50,9 @@ class DeviceRowModel {
             self.isOnline = false
         } catch IamError.USER_DOES_NOT_EXIST {
             self.isPaired = false
+        } catch DeviceError.DEVICE_IDENTITY_CHANGED {
+            self.isOnline = false
+            self.error = "Device identity changed since pairing"
         } catch {
             print("Device \(bookmark.name) is not available due to error: \(error)")
             self.isOnline = false

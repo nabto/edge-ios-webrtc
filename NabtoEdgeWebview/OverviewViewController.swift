@@ -216,9 +216,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         let group = DispatchGroup()
         for device in self.devices {
             group.enter()
-            DispatchQueue.global().async {
+            Task {
                 do {
-                    try self.populateWithDetails(device)
+                    try await device.populateWithDetails()
                 } catch {
                     print("An error occurred when retrieving device information for \(device.bookmark): \(error)")
                 }
@@ -229,30 +229,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         group.wait()
-    }
-
-    private func populateWithDetails(_ device: DeviceRowModel) throws {
-        do {
-            let connection = try EdgeConnectionManager.shared.getConnection(device.bookmark)
-            device.isOnline = true
-            let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
-            if let role = user.Role {
-                device.isPaired = true
-                device.bookmark.role = role
-            } else {
-                device.isPaired = false
-            }
-        } catch NabtoEdgeClientError.NO_CHANNELS(_, _) {
-            device.isOnline = false
-        } catch IamError.USER_DOES_NOT_EXIST {
-            device.isPaired = false
-        } catch DeviceError.DEVICE_IDENTITY_CHANGED {
-            device.isOnline = false
-            device.error = "Device identity changed since pairing"
-        } catch {
-            print("Device \(device.bookmark.name) is not available due to error: \(error)")
-            device.isOnline = false
-        }
     }
 
     @IBAction func refresh(_ sender: Any) {
@@ -281,15 +257,15 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     private func handleOfflineDevice(_ device: DeviceRowModel) {
         // expect timeout, so indicate activity in the UI
         self.buttonBarSpinner.startAnimating()
-        DispatchQueue.global().async {
+        Task {
             defer {
-                DispatchQueue.main.sync {
+                Task { @MainActor in
                     self.buttonBarSpinner.stopAnimating()
                 }
             }
             do {
                 let updatedDevice = DeviceRowModel(bookmark: device.bookmark)
-                try updatedDevice.populateWithDetails()
+                try await updatedDevice.populateWithDetails()
                 if (updatedDevice.isOnline ?? false) {
                     self.handleOnlineDevice(updatedDevice)
                 } else {
@@ -308,7 +284,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     func handleOnlineDevice(_ device: DeviceRowModel) {
         DispatchQueue.main.async {
-            if (true) {
+            if (device.isPaired) {
                 self.handlePaired(device: device.bookmark)
             } else {
                 self.handleUnpaired(device: device.bookmark)
