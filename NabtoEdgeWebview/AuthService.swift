@@ -114,4 +114,8 @@ class AuthService {
             throw AuthError.failedDeviceCoapStatus(status: Int(response!.status))
         }
     }
+    
+    func logout() async {
+        let signOutResult = await Amplify.Auth.signOut()
+    }
 }

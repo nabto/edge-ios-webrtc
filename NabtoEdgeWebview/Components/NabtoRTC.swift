@@ -21,6 +21,19 @@ fileprivate struct RTCInfo: Codable {
     }
 }
 
+fileprivate struct TurnServer: Codable {
+    let hostname: String
+    let port: Int
+    let username: String
+    let password: String
+}
+
+fileprivate struct IceCandidate: Codable {
+    let candidate: String
+    let sdpMid: String
+    let sdpMLineIndex: Int?
+}
+
 fileprivate struct SignalMessageMetadataTrack: Codable {
     let mid: String
     let trackId: String
@@ -41,8 +54,9 @@ fileprivate enum SignalMessageType: Int, Codable {
 
 fileprivate struct SignalMessage: Codable {
     let type: SignalMessageType
-    let data: String?
-    let metadata: SignalMessageMetadata?
+    var data: String? = nil
+    var servers: [TurnServer]? = nil
+    var metadata: SignalMessageMetadata? = nil
 }
 
 fileprivate struct SDP: Codable {
@@ -77,9 +91,6 @@ final class NabtoRTC: NSObject {
     
     override init() {
         let config = RTCConfiguration()
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
-        config.sdpSemantics = .unifiedPlan
-        config.continualGatheringPolicy = .gatherContinually
         
         super.init()
         
@@ -145,13 +156,10 @@ final class NabtoRTC: NSObject {
         startSignalingStream(conn)
         let streamId = "stream"
         
-        // audio track
-        /*
-        let audioConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        let audioSource = NabtoRTC.factory.audioSource(with: audioConstraints)
-        let audioTrack = NabtoRTC.factory.audioTrack(with: audioSource, trackId: "audio0")
-        self.peerConnection.add(audioTrack, streamIds: [streamId])
-         */
+        let config = RTCConfiguration()
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
+        config.sdpSemantics = .unifiedPlan
+        config.continualGatheringPolicy = .gatherContinually
         
         // video track
         let videoSource = NabtoRTC.factory.videoSource()
@@ -162,44 +170,65 @@ final class NabtoRTC: NSObject {
         
         Task {
             do {
-                let msg = try readSignalMessage(deviceStream)
-                switch msg.type {
-                case .answer:
-                    let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
-                    let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
-                    try await self.peerConnection.setRemoteDescription(sdp)
-                    break
-                case .offer:
-                    break
-                case .iceCandidate:
-                    break
-                case .turnRequest:
-                    break
-                case .turnResponse:
-                    break
+                try await writeSignalMessage(deviceStream, msg: SignalMessage(type: .turnRequest))
+                
+                while true {
+                    let msg = try await readSignalMessage(deviceStream)
+                    print("Received msg of type: \(msg.type)")
+                    switch msg.type {
+                    case .answer:
+                        let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
+                        let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
+                        try await self.peerConnection.setRemoteDescription(sdp)
+                        break
+                        
+                    case .iceCandidate:
+                        let cand = try jsonDecoder.decode(IceCandidate.self, from: msg.data!.data(using: .utf8)!)
+                        try await self.peerConnection.add(RTCIceCandidate(
+                            sdp: cand.candidate,
+                            sdpMLineIndex: 0,
+                            sdpMid: cand.sdpMid
+                        ))
+                        break
+                        
+                    case .turnResponse:
+                        guard let turnServers = msg.servers else {
+                            // @TODO: Show an error to the user
+                            break
+                        }
+                        
+                        for server in turnServers {
+                            let turn = RTCIceServer(
+                                urlStrings: [server.hostname],
+                                username: server.username,
+                                credential: server.password
+                            )
+                            config.iceServers.append(turn)
+                        }
+                        self.peerConnection.setConfiguration(config)
+                        
+                        let offer = await self.createOffer()
+                        let msg = SignalMessage(
+                            type: .offer,
+                            data: offer.toJSON(),
+                            metadata: SignalMessageMetadata(
+                                tracks: [SignalMessageMetadataTrack(mid: "0", trackId: "frontdoor-video")],
+                                noTrickle: false
+                            )
+                        )
+                        
+                        try await writeSignalMessage(deviceStream, msg: msg)
+                        try await peerConnection.setLocalDescription(offer)
+                        break
+                        
+                    default:
+                        print("Unexpected signaling message of type: \(msg.type)")
+                        break
+                    }
                 }
             } catch {
                 // @TODO: Better error handling for the msg loop
                 print("MsgLoop failed: \(error)")
-            }
-        }
-        
-        Task {
-            let offer = await self.createOffer()
-            do {
-                let msg = SignalMessage(
-                    type: .offer,
-                    data: offer.toJSON(),
-                    metadata: SignalMessageMetadata(
-                        tracks: [SignalMessageMetadataTrack(mid: "0", trackId: "frontdoor-video")],
-                        noTrickle: false
-                    )
-                )
-                
-                try writeSignalMessage(deviceStream, msg: msg)
-                try await peerConnection.setLocalDescription(offer)
-            } catch {
-                print("Failed to set local description")
             }
         }
     }
@@ -283,14 +312,15 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
         print("NabtoRTC: New ICE candidate generated: \(candidate.sdp)")
-        do {
-            try writeSignalMessage(self.deviceStream, msg: SignalMessage(
-                type: .iceCandidate,
-                data: candidate.toJSON(),
-                metadata: nil
-            ))
-        } catch {
-            print("NabtoRTC: Failed to send ICE candidate to peer. \(error)")
+        Task {
+            do {
+                try await writeSignalMessage(self.deviceStream, msg: SignalMessage(
+                    type: .iceCandidate,
+                    data: candidate.toJSON()
+                ))
+            } catch {
+                print("NabtoRTC: Failed to send ICE candidate to peer. \(error)")
+            }
         }
     }
     
@@ -305,15 +335,33 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
 
 // MARK: Nabto device signaling
 extension NabtoRTC {
-    private func readSignalMessage(_ stream: NabtoEdgeClient.Stream) throws -> SignalMessage {
-        let lenData = try deviceStream.readAll(length: 4)
+    private func readSignalMessage(_ stream: NabtoEdgeClient.Stream) async throws -> SignalMessage {
+        let lenData = try await withCheckedThrowingContinuation { continuation in
+            deviceStream.readAllAsync(length: 4) { err, data in
+                if err == .OK {
+                    continuation.resume(returning: data!)
+                } else {
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+        
         let len: Int32 = lenData.withUnsafeBytes { $0.load(as: Int32.self)}
         
-        let data = try stream.readAll(length: Int(len))
+        let data = try await withCheckedThrowingContinuation { continuation in
+            deviceStream.readAllAsync(length: Int(len)) { err, data in
+                if err == .OK {
+                    continuation.resume(returning: data!)
+                } else {
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+        
         return try jsonDecoder.decode(SignalMessage.self, from: data)
     }
     
-    private func writeSignalMessage(_ stream: NabtoEdgeClient.Stream, msg: SignalMessage) throws {
+    private func writeSignalMessage(_ stream: NabtoEdgeClient.Stream, msg: SignalMessage) async throws {
         let encoded = try jsonEncoder.encode(msg)
         let len = UInt32(encoded.count)
         
@@ -321,7 +369,15 @@ extension NabtoRTC {
         data.append(contentsOf: withUnsafeBytes(of: len.littleEndian, Array.init))
         data.append(encoded)
         
-        try stream.write(data: data)
+        try await withCheckedThrowingContinuation { continuation in
+            stream.writeAsync(data: data) { err in
+                if err == .OK {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
     }
 }
 

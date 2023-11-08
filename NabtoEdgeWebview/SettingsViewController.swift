@@ -79,4 +79,24 @@ class SettingsViewController: UIViewController {
         
     }
     
+    @IBAction func logout(_ sender: Any) {
+        
+        let title = "Log out"
+        let message = "Are you sure you want to log out?"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { action in
+            Task {
+                await AuthService.shared.logout()
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            alert.dismiss(animated: true, completion: nil)
+        }
+        let noAction = UIAlertAction(title: "No", style: .cancel) { action in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
