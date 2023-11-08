@@ -236,13 +236,14 @@ final class NabtoRTC: NSObject {
 
 extension RTCSessionDescription {
     func toJSON() -> String {
-        let strType = switch self.type {
-        case .answer: "answer"
-        case .offer: "offer"
-        case .prAnswer: "prAnswer"
-        case .rollback: "rollback"
+        let strType: String // Define the type of the variable
+        switch self.type {
+        case .answer: strType = "answer"
+        case .offer: strType = "offer"
+        case .prAnswer: strType = "prAnswer"
+        case .rollback: strType = "rollback"
         }
-        
+
         let obj: [String: Any] = [
             "type": strType,
             "sdp": self.sdp
@@ -261,6 +262,7 @@ extension RTCSessionDescription {
         return result
     }
 }
+
 
 extension RTCIceCandidate {
     func toJSON() -> String {
@@ -287,7 +289,7 @@ extension RTCIceCandidate {
 // MARK: RTCPeerConnectionDelegate implementation
 extension NabtoRTC: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        print("NabtoRTC: Signaling state changed to \(stateChanged.description)")
+        print("NabtoRTC: Signaling state changed to \((try? stateChanged.description()) ?? "invalid RTCSignalingState")")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
@@ -303,11 +305,11 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        print("NabtoRTC: ICE connection state changed to: \(newState.description)")
+        print("NabtoRTC: ICE connection state changed to: \((try? newState.description()) ?? "invalid RTCIceConnectionState")")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        print("NabtoRTC: ICE gathering state changed to: \(newState.description)")
+        print("NabtoRTC: ICE gathering state changed to: \((try? newState.description()) ?? "invalid RTCIceGatheringState")")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
@@ -382,56 +384,61 @@ extension NabtoRTC {
 }
 
 extension RTCSignalingState {
-    public var description: String {
-        return switch self {
+    public func description() throws -> String {
+        switch self {
         case .closed:
-            "closed"
+            return "closed"
         case .stable:
-            "stable"
+            return "stable"
         case .haveLocalOffer:
-            "haveLocalOffer"
+            return "haveLocalOffer"
         case .haveLocalPrAnswer:
-            "haveLocalPrAnswer"
+            return "haveLocalPrAnswer"
         case .haveRemoteOffer:
-            "haveRemoteOffer"
+            return "haveRemoteOffer"
         case .haveRemotePrAnswer:
-            "haveRemotePrAnswer"
-        }
-    }
-}
-
-extension RTCIceConnectionState {
-    public var description: String {
-        return switch self {
-        case .checking:
-            "checking"
-        case .new:
-            "new"
-        case .connected:
-            "connected"
-        case .completed:
-            "completed"
-        case .failed:
-            "failed"
-        case .disconnected:
-            "disconnected"
-        case .closed:
-            "closed"
-        case .count:
-            "count"
+            return "haveRemotePrAnswer"
+        @unknown default:
+           throw NabtoEdgeClientError.INVALID_ARGUMENT
         }
     }
 }
 
 extension RTCIceGatheringState {
-    public var description: String {
-        return switch self {
+    public func description() throws -> String {
+        switch self {
         case .complete:
-            "complete"
+            return "complete"
         case .new:
-            "new"
+            return "new"
         case .gathering:
-            "gathering"
+            return "gathering"
+        @unknown default:
+           throw NabtoEdgeClientError.INVALID_ARGUMENT
         }
     }
 }
+
+extension RTCIceConnectionState {
+    public func description() throws -> String {
+        switch self {
+        case .new:
+             return "new"
+         case .checking:
+             return "checking"
+         case .connected:
+             return "connected"
+         case .completed:
+             return "completed"
+         case .failed:
+             return "failed"
+         case .disconnected:
+             return "disconnected"
+         case .closed:
+             return "closed"
+         @unknown default:
+            throw NabtoEdgeClientError.INVALID_ARGUMENT
+        }
+    }
+}
+
