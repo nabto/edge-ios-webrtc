@@ -145,26 +145,19 @@ class EdgeConnectionManager {
 
     func doConnect(_ target: Bookmark) throws -> Connection {
         let connection = try self.client.createConnection()
-        // @TODO: Really ugly manual option update so we can have server URL included.
-        // try connection.setProductId(id: target.productId)
-        // try connection.setDeviceId(id: target.deviceId)
+        try connection.setProductId(id: target.productId)
+        try connection.setDeviceId(id: target.deviceId)
+        
         guard let key = ProfileTools.getSavedPrivateKey() else {
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Private key not set")
         }
-        // try connection.setPrivateKey(key: key)
+        try connection.setPrivateKey(key: key)
 
         guard let sct = target.sct else {
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "SCT not set")
         }
-        try connection.updateOptions(json: """
-{
-    "ProductId": "\(target.productId)",
-    "DeviceId": "\(target.deviceId)",
-    "PrivateKey": "\(key.replacingOccurrences(of: "\n", with: "\\n"))",
-    "ServerUrl": "https://\(target.productId).clients.dev.nabto.net",
-    "ServerConnectToken": "\(sct)"
-}
-""")
+        try connection.setServerConnectToken(sct: sct)
+        
         try connection.connect()
         if let fp = target.deviceFingerprint {
             if (try connection.getDeviceFingerprintHex() != fp) {

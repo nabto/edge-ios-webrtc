@@ -19,7 +19,7 @@ struct CloudDevice: Codable {
     var name: String
     var nabtoProductId: String
     var nabtoDeviceId: String
-    var nabtoSct: String
+    var nabtoSct: String?
     var fingerprint: String
 }
 
