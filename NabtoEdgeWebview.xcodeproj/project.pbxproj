@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		42BFB9712AF05E08000C2CC7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96F2AF05E08000C2CC7 /* AuthService.swift */; };
 		42BFB9742AF2938F000C2CC7 /* NabtoRTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */; };
 		42BFB9752AF2938F000C2CC7 /* NabtoRTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */; };
+		42BFB9782AFE58A3000C2CC7 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */; };
 		45022383759B3A4BBF3A7F7F /* Pods_NabtoEdgeWebviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */; };
 		6D04A6DB1E3F4C4800DD9F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */; };
 		6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
@@ -129,6 +130,7 @@
 				6D04A7481E3F57E900DD9F70 /* Foundation.framework in Frameworks */,
 				009A708D1F3434E15D73F5F5 /* Pods_Nabto_Edge_Webview.framework in Frameworks */,
 				42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */,
+				42BFB9782AFE58A3000C2CC7 /* AsyncAlgorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +287,7 @@
 			packageProductDependencies = (
 				42030BBD2AEF279800DE9FE2 /* AWSCognitoAuthPlugin */,
 				42030BBF2AEF279800DE9FE2 /* Amplify */,
+				42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */,
 			);
 			productName = NabtoEdgeVideo;
 			productReference = 6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */;
@@ -344,6 +347,7 @@
 			mainGroup = 6D04A6CE1E3F4C4800DD9F70;
 			packageReferences = (
 				42030BBC2AEF279800DE9FE2 /* XCRemoteSwiftPackageReference "amplify-swift" */,
+				42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 			);
 			productRefGroup = 6D04A6D81E3F4C4800DD9F70 /* Products */;
 			projectDirPath = "";
@@ -859,6 +863,14 @@
 				minimumVersion = 2.21.1;
 			};
 		};
+		42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -871,6 +883,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 42030BBC2AEF279800DE9FE2 /* XCRemoteSwiftPackageReference "amplify-swift" */;
 			productName = Amplify;
+		};
+		42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
+			productName = AsyncAlgorithms;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

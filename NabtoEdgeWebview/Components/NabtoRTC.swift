@@ -10,6 +10,7 @@ import Foundation
 import WebRTC
 import NabtoEdgeClient
 import CBORCoding
+import AsyncAlgorithms
 
 fileprivate struct RTCInfo: Codable {
     let fileStreamPort: UInt32
@@ -79,6 +80,7 @@ final class NabtoRTC: NSObject {
     
     // Nabto
     private var deviceStream: NabtoEdgeClient.Stream!
+    private let messageChannel = AsyncChannel<SignalMessage>()
     
     // WebRTC
     private var peerConnection: RTCPeerConnection!
@@ -169,8 +171,19 @@ final class NabtoRTC: NSObject {
         self.remoteVideoTrack?.add(renderer)
         
         Task {
+            for await msg in messageChannel {
+                do {
+                    try await writeSignalMessage(deviceStream, msg: msg)
+                } catch {
+                    print("Error in consumer task \(error)")
+                }
+            }
+        }
+        
+        Task {
             do {
-                try await writeSignalMessage(deviceStream, msg: SignalMessage(type: .turnRequest))
+                //try await writeSignalMessage(deviceStream, msg: SignalMessage(type: .turnRequest))
+                await messageChannel.send(SignalMessage(type: .turnRequest))
                 
                 while true {
                     let msg = try await readSignalMessage(deviceStream)
@@ -217,7 +230,8 @@ final class NabtoRTC: NSObject {
                             )
                         )
                         
-                        try await writeSignalMessage(deviceStream, msg: msg)
+                        //try await writeSignalMessage(deviceStream, msg: msg)
+                        await messageChannel.send(msg)
                         try await peerConnection.setLocalDescription(offer)
                         break
                         
@@ -315,14 +329,10 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
         print("NabtoRTC: New ICE candidate generated: \(candidate.sdp)")
         Task {
-            do {
-                try await writeSignalMessage(self.deviceStream, msg: SignalMessage(
-                    type: .iceCandidate,
-                    data: candidate.toJSON()
-                ))
-            } catch {
-                print("NabtoRTC: Failed to send ICE candidate to peer. \(error)")
-            }
+            await messageChannel.send(SignalMessage(
+                type: .iceCandidate,
+                data: candidate.toJSON()
+            ))
         }
     }
     
