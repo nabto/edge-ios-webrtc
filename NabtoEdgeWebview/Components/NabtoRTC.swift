@@ -91,19 +91,6 @@ final class NabtoRTC: NSObject {
     
     private var remoteVideoTrack: RTCVideoTrack?
     
-    override init() {
-        let config = RTCConfiguration()
-        
-        super.init()
-        
-        let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        guard let peerConnection = NabtoRTC.factory.peerConnection(with: config, constraints: constraints, delegate: self) else {
-            fatalError("Failed to create RTCPeerConnection")
-        }
-        
-        self.peerConnection = peerConnection
-    }
-    
     deinit {
         do {
             peerConnection.close()
@@ -154,14 +141,15 @@ final class NabtoRTC: NSObject {
         }
     }
     
-    private func connectInternal(conn: Connection, renderer: RTCVideoRenderer) {
-        startSignalingStream(conn)
+    private func startPeerConnection(_ config: RTCConfiguration, _ renderer: RTCVideoRenderer) {
         let streamId = "stream"
         
-        let config = RTCConfiguration()
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
-        config.sdpSemantics = .unifiedPlan
-        config.continualGatheringPolicy = .gatherContinually
+        let constraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+        guard let peerConnection = NabtoRTC.factory.peerConnection(with: config, constraints: constraints, delegate: self) else {
+            fatalError("Failed to create RTCPeerConnection")
+        }
+        
+        self.peerConnection = peerConnection
         
         // video track
         let videoSource = NabtoRTC.factory.videoSource()
@@ -169,6 +157,15 @@ final class NabtoRTC: NSObject {
         self.peerConnection.add(videoTrack, streamIds: [streamId])
         self.remoteVideoTrack = self.peerConnection.transceivers.first { $0.mediaType == .video }?.receiver.track as? RTCVideoTrack
         self.remoteVideoTrack?.add(renderer)
+    }
+    
+    private func connectInternal(conn: Connection, renderer: RTCVideoRenderer) {
+        startSignalingStream(conn)
+        
+        let config = RTCConfiguration()
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
+        config.sdpSemantics = .unifiedPlan
+        config.continualGatheringPolicy = .gatherContinually
         
         Task {
             for await msg in messageChannel {
@@ -218,7 +215,8 @@ final class NabtoRTC: NSObject {
                             )
                             config.iceServers.append(turn)
                         }
-                        self.peerConnection.setConfiguration(config)
+                        
+                        self.startPeerConnection(config, renderer)
                         
                         let offer = await self.createOffer()
                         let msg = SignalMessage(
