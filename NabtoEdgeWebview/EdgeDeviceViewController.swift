@@ -18,6 +18,7 @@ import WebRTC
 class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
     private let cborEncoder: CBOREncoder = CBOREncoder()
     private let rtc = NabtoRTC()
+    private var renderer: RTCMTLVideoView!
 
     @IBOutlet weak var settingsButton       : UIButton!
     @IBOutlet weak var connectingView       : UIView!
@@ -120,15 +121,14 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         super.viewDidLoad()
         self.busy = true
         
-        let renderer = RTCMTLVideoView(frame: self.videoScreenView.frame)
+        renderer = RTCMTLVideoView(frame: self.videoScreenView.frame)
         renderer.videoContentMode = .scaleAspectFit
         
         embedView(renderer, into: self.videoScreenView)
         self.busy = false
         
         Task {
-            // NabtoRTC.shared.connectToDevice(bookmark: self.device, renderer: renderer)
-            rtc.connectToDevice(bookmark: self.device, renderer: renderer)
+            rtc.start(bookmark: self.device, renderer: renderer)
         }
     }
 
@@ -167,7 +167,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
                        object: nil)
         nc.addObserver(self,
                        selector: #selector(appWillMoveToForeground),
-                       name: UIApplication.willEnterForegroundNotification,
+                       name: UIApplication.didBecomeActiveNotification,
                        object: nil)
     }
     
@@ -192,9 +192,19 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
     }
 
     // MARK: - Reachability callbacks
-    @objc func appMovedToBackground() { }
+    @objc func appMovedToBackground() {
+        Task {
+            print("Backgrounded")
+            try? rtc.stop()
+        }
+    }
     
-    @objc func appWillMoveToForeground() { }
+    @objc func appWillMoveToForeground() {
+        Task {
+            print("Foregrounded")
+            rtc.start(bookmark: self.device, renderer: renderer)
+        }
+    }
 
     @objc func connectionClosed(_ notification: Notification) {
         if notification.object is Bookmark {

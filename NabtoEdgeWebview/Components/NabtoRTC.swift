@@ -73,6 +73,13 @@ final class NabtoRTC: NSObject {
         return RTCPeerConnectionFactory(encoderFactory: videoEncoderFactory, decoderFactory: videoDecoderFactory)
     }()
     
+    private var isStarted = false
+    private var renderer: RTCVideoRenderer!
+    
+    // Tasks
+    private var messageLoop: Task<(), Never>? = nil
+    private var queueLoop: Task<(), Never>? = nil
+    
     // Misc
     private let cborDecoder = CBORDecoder()
     private let jsonEncoder = JSONEncoder()
@@ -93,20 +100,46 @@ final class NabtoRTC: NSObject {
     
     deinit {
         do {
-            peerConnection.close()
-            try deviceStream.close()
+            try stop()
         } catch {
             print("NabtoRTC: error in deinitialization \(error)")
         }
     }
     
-    func connectToDevice(bookmark: Bookmark, renderer: RTCVideoRenderer) {
+    func start(bookmark: Bookmark, renderer: RTCVideoRenderer) {
+        if isStarted {
+            debugPrint("NabtoRTC.start was called but its already started.")
+            return
+        }
+        isStarted = true
+        
+        self.renderer = renderer
         let maybeConn = try? EdgeConnectionManager.shared.getConnection(bookmark)
         if let conn = maybeConn {
-            connectInternal(conn: conn, renderer: renderer)
+            connectInternal(conn: conn)
         } else {
             print("Could not get connection for bookmark \(bookmark)")
         }
+    }
+    
+    func stop() throws {
+        if !isStarted {
+            debugPrint("NabtoRTC.stop was called but it was never started.")
+            return
+        }
+        
+        queueLoop?.cancel()
+        messageLoop?.cancel()
+        
+        peerConnection.close()
+        try? deviceStream.close()
+        
+        queueLoop = nil
+        messageLoop = nil
+        peerConnection = nil
+        deviceStream = nil
+        
+        isStarted = false
     }
     
     private func createOffer() async -> RTCSessionDescription {
@@ -159,15 +192,89 @@ final class NabtoRTC: NSObject {
         self.remoteVideoTrack?.add(renderer)
     }
     
-    private func connectInternal(conn: Connection, renderer: RTCVideoRenderer) {
+    private func msgLoop() async {
+        await messageChannel.send(SignalMessage(type: .turnRequest))
+        
+        while true {
+            let msg = try? await readSignalMessage(deviceStream)
+            guard let msg = msg else {
+                break
+            }
+            
+            switch msg.type {
+            case .answer:
+                do {
+                    let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
+                    let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
+                    try await self.peerConnection.setRemoteDescription(sdp)
+                } catch {
+                    // @TODO
+                }
+                break
+                
+            case .iceCandidate:
+                do {
+                    let cand = try jsonDecoder.decode(IceCandidate.self, from: msg.data!.data(using: .utf8)!)
+                    try await self.peerConnection.add(RTCIceCandidate(
+                        sdp: cand.candidate,
+                        sdpMLineIndex: 0,
+                        sdpMid: cand.sdpMid
+                    ))
+                } catch {
+                    // @TODO
+                }
+                break
+                
+            case .turnResponse:
+                guard let turnServers = msg.servers else {
+                    // @TODO: Show an error to the user
+                    break
+                }
+                
+                let config = RTCConfiguration()
+                config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
+                config.sdpSemantics = .unifiedPlan
+                config.continualGatheringPolicy = .gatherContinually
+                
+                for server in turnServers {
+                    let turn = RTCIceServer(
+                        urlStrings: [server.hostname],
+                        username: server.username,
+                        credential: server.password
+                    )
+                    
+                    config.iceServers.append(turn)
+                }
+                
+                self.startPeerConnection(config, renderer)
+                
+                let offer = await self.createOffer()
+                let msg = SignalMessage(
+                    type: .offer,
+                    data: offer.toJSON(),
+                    metadata: SignalMessageMetadata(
+                        tracks: [SignalMessageMetadataTrack(mid: "0", trackId: "frontdoor-video")],
+                        noTrickle: false
+                    )
+                )
+                
+                await messageChannel.send(msg)
+                do { try await peerConnection.setLocalDescription(offer) } catch {
+                    // @TODO
+                }
+                break
+                
+            default:
+                print("Unexpected signaling message of type: \(msg.type)")
+                break
+            }
+        }
+    }
+    
+    private func connectInternal(conn: Connection) {
         startSignalingStream(conn)
         
-        let config = RTCConfiguration()
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.nabto.net"])]
-        config.sdpSemantics = .unifiedPlan
-        config.continualGatheringPolicy = .gatherContinually
-        
-        Task {
+        self.queueLoop = Task {
             for await msg in messageChannel {
                 do {
                     try await writeSignalMessage(deviceStream, msg: msg)
@@ -177,72 +284,7 @@ final class NabtoRTC: NSObject {
             }
         }
         
-        Task {
-            do {
-                //try await writeSignalMessage(deviceStream, msg: SignalMessage(type: .turnRequest))
-                await messageChannel.send(SignalMessage(type: .turnRequest))
-                
-                while true {
-                    let msg = try await readSignalMessage(deviceStream)
-                    print("Received msg of type: \(msg.type)")
-                    switch msg.type {
-                    case .answer:
-                        let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
-                        let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
-                        try await self.peerConnection.setRemoteDescription(sdp)
-                        break
-                        
-                    case .iceCandidate:
-                        let cand = try jsonDecoder.decode(IceCandidate.self, from: msg.data!.data(using: .utf8)!)
-                        try await self.peerConnection.add(RTCIceCandidate(
-                            sdp: cand.candidate,
-                            sdpMLineIndex: 0,
-                            sdpMid: cand.sdpMid
-                        ))
-                        break
-                        
-                    case .turnResponse:
-                        guard let turnServers = msg.servers else {
-                            // @TODO: Show an error to the user
-                            break
-                        }
-                        
-                        for server in turnServers {
-                            let turn = RTCIceServer(
-                                urlStrings: [server.hostname],
-                                username: server.username,
-                                credential: server.password
-                            )
-                            config.iceServers.append(turn)
-                        }
-                        
-                        self.startPeerConnection(config, renderer)
-                        
-                        let offer = await self.createOffer()
-                        let msg = SignalMessage(
-                            type: .offer,
-                            data: offer.toJSON(),
-                            metadata: SignalMessageMetadata(
-                                tracks: [SignalMessageMetadataTrack(mid: "0", trackId: "frontdoor-video")],
-                                noTrickle: false
-                            )
-                        )
-                        
-                        //try await writeSignalMessage(deviceStream, msg: msg)
-                        await messageChannel.send(msg)
-                        try await peerConnection.setLocalDescription(offer)
-                        break
-                        
-                    default:
-                        print("Unexpected signaling message of type: \(msg.type)")
-                        break
-                    }
-                }
-            } catch {
-                // @TODO: Better error handling for the msg loop
-                print("MsgLoop failed: \(error)")
-            }
-        }
+        self.messageLoop = Task { await self.msgLoop() }
     }
 }
 
