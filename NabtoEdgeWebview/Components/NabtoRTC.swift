@@ -86,11 +86,11 @@ final class NabtoRTC: NSObject {
     private let jsonDecoder = JSONDecoder()
     
     // Nabto
-    private var deviceStream: NabtoEdgeClient.Stream!
+    private var deviceStream: NabtoEdgeClient.Stream?
     private let messageChannel = AsyncChannel<SignalMessage>()
     
     // WebRTC
-    private var peerConnection: RTCPeerConnection!
+    private var peerConnection: RTCPeerConnection?
     private let mandatoryConstraints = [
         kRTCMediaConstraintsOfferToReceiveVideo: kRTCMediaConstraintsValueTrue
         //kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueTrue
@@ -122,7 +122,7 @@ final class NabtoRTC: NSObject {
         }
     }
     
-    func stop() throws {
+    func stop() {
         if !isStarted {
             debugPrint("NabtoRTC.stop was called but it was never started.")
             return
@@ -131,8 +131,8 @@ final class NabtoRTC: NSObject {
         queueLoop?.cancel()
         messageLoop?.cancel()
         
-        peerConnection.close()
-        try? deviceStream.close()
+        peerConnection?.close()
+        try? deviceStream?.close()
         
         queueLoop = nil
         messageLoop = nil
@@ -142,10 +142,10 @@ final class NabtoRTC: NSObject {
         isStarted = false
     }
     
-    private func createOffer() async -> RTCSessionDescription {
+    private func createOffer(_ pc: RTCPeerConnection) async -> RTCSessionDescription {
         let constraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         return await withCheckedContinuation { continuation in
-            self.peerConnection.offer(for: constraints) { (sdp, error) in
+            pc.offer(for: constraints) { (sdp, error) in
                 guard let sdp = sdp else { return }
                 continuation.resume(returning: sdp)
             }
@@ -164,7 +164,7 @@ final class NabtoRTC: NSObject {
             let rtcInfo = try? cborDecoder.decode(RTCInfo.self, from: coapResult.payload)
             if let rtcInfo = rtcInfo {
                 self.deviceStream = try conn.createStream()
-                try self.deviceStream.open(streamPort: rtcInfo.signalingStreamPort)
+                try self.deviceStream!.open(streamPort: rtcInfo.signalingStreamPort)
             } else {
                 print("Could not decode coap payload")
             }
@@ -187,8 +187,8 @@ final class NabtoRTC: NSObject {
         // video track
         let videoSource = NabtoRTC.factory.videoSource()
         let videoTrack = NabtoRTC.factory.videoTrack(with: videoSource, trackId: "video0")
-        self.peerConnection.add(videoTrack, streamIds: [streamId])
-        self.remoteVideoTrack = self.peerConnection.transceivers.first { $0.mediaType == .video }?.receiver.track as? RTCVideoTrack
+        self.peerConnection!.add(videoTrack, streamIds: [streamId])
+        self.remoteVideoTrack = self.peerConnection!.transceivers.first { $0.mediaType == .video }?.receiver.track as? RTCVideoTrack
         self.remoteVideoTrack?.add(renderer)
     }
     
@@ -196,7 +196,7 @@ final class NabtoRTC: NSObject {
         await messageChannel.send(SignalMessage(type: .turnRequest))
         
         while true {
-            let msg = try? await readSignalMessage(deviceStream)
+            let msg = try? await readSignalMessage(deviceStream!)
             guard let msg = msg else {
                 break
             }
@@ -206,22 +206,22 @@ final class NabtoRTC: NSObject {
                 do {
                     let answer = try jsonDecoder.decode(SDP.self, from: msg.data!.data(using: .utf8)!)
                     let sdp = RTCSessionDescription(type: RTCSdpType.answer, sdp: answer.sdp)
-                    try await self.peerConnection.setRemoteDescription(sdp)
+                    try await self.peerConnection!.setRemoteDescription(sdp)
                 } catch {
-                    // @TODO
+                    debugPrint("NabtoRTC: Failed handling ANSWER message \(error)")
                 }
                 break
                 
             case .iceCandidate:
                 do {
                     let cand = try jsonDecoder.decode(IceCandidate.self, from: msg.data!.data(using: .utf8)!)
-                    try await self.peerConnection.add(RTCIceCandidate(
+                    try await self.peerConnection!.add(RTCIceCandidate(
                         sdp: cand.candidate,
                         sdpMLineIndex: 0,
                         sdpMid: cand.sdpMid
                     ))
                 } catch {
-                    // @TODO
+                    debugPrint("NabtoRTC: Failed handling ICE candidate message \(error)")
                 }
                 break
                 
@@ -248,7 +248,7 @@ final class NabtoRTC: NSObject {
                 
                 self.startPeerConnection(config, renderer)
                 
-                let offer = await self.createOffer()
+                let offer = await self.createOffer(peerConnection!)
                 let msg = SignalMessage(
                     type: .offer,
                     data: offer.toJSON(),
@@ -259,8 +259,8 @@ final class NabtoRTC: NSObject {
                 )
                 
                 await messageChannel.send(msg)
-                do { try await peerConnection.setLocalDescription(offer) } catch {
-                    // @TODO
+                do { try await peerConnection!.setLocalDescription(offer) } catch {
+                    debugPrint("NabtoRTC: Failed setting peer connection local description \(error)")
                 }
                 break
                 
@@ -277,7 +277,7 @@ final class NabtoRTC: NSObject {
         self.queueLoop = Task {
             for await msg in messageChannel {
                 do {
-                    try await writeSignalMessage(deviceStream, msg: msg)
+                    try await writeSignalMessage(deviceStream!, msg: msg)
                 } catch {
                     print("Error in consumer task \(error)")
                 }
@@ -389,7 +389,7 @@ extension NabtoRTC: RTCPeerConnectionDelegate {
 extension NabtoRTC {
     private func readSignalMessage(_ stream: NabtoEdgeClient.Stream) async throws -> SignalMessage {
         let lenData = try await withCheckedThrowingContinuation { continuation in
-            deviceStream.readAllAsync(length: 4) { err, data in
+            deviceStream!.readAllAsync(length: 4) { err, data in
                 if err == .OK {
                     continuation.resume(returning: data!)
                 } else {
@@ -401,7 +401,7 @@ extension NabtoRTC {
         let len: Int32 = lenData.withUnsafeBytes { $0.load(as: Int32.self)}
         
         let data = try await withCheckedThrowingContinuation { continuation in
-            deviceStream.readAllAsync(length: Int(len)) { err, data in
+            deviceStream!.readAllAsync(length: Int(len)) { err, data in
                 if err == .OK {
                     continuation.resume(returning: data!)
                 } else {

@@ -193,17 +193,11 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
 
     // MARK: - Reachability callbacks
     @objc func appMovedToBackground() {
-        Task {
-            print("Backgrounded")
-            try? rtc.stop()
-        }
+        rtc.stop()
+        navigationController?.popToRootViewController(animated: false)
     }
     
     @objc func appWillMoveToForeground() {
-        Task {
-            print("Foregrounded")
-            rtc.start(bookmark: self.device, renderer: renderer)
-        }
     }
 
     @objc func connectionClosed(_ notification: Notification) {
