@@ -11,15 +11,18 @@
 		42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 42030BBD2AEF279800DE9FE2 /* AWSCognitoAuthPlugin */; };
 		42030BC02AEF279800DE9FE2 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = 42030BBF2AEF279800DE9FE2 /* Amplify */; };
 		4236EDAE299E72210049A425 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4236EDAD299E72210049A425 /* AssetsLibrary.framework */; };
+		424C39822B600A44003DE01D /* NabtoEdgeClient in Frameworks */ = {isa = PBXBuildFile; productRef = 424C39812B600A44003DE01D /* NabtoEdgeClient */; };
+		424C39852B600A7F003DE01D /* NabtoEdgeIamUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 424C39842B600A7F003DE01D /* NabtoEdgeIamUtil */; };
+		424C39882B610546003DE01D /* NabtoEdgeIamUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 424C39872B610546003DE01D /* NabtoEdgeIamUtil */; };
+		424C398B2B61058F003DE01D /* NabtoEdgeClientWebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = 424C398A2B61058F003DE01D /* NabtoEdgeClientWebRTC */; };
+		426034462B5EE01300F7BF0A /* NabtoEdgeIamUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 426034452B5EE01300F7BF0A /* NabtoEdgeIamUtil */; };
+		426034492B5EE05900F7BF0A /* CBORCoding in Frameworks */ = {isa = PBXBuildFile; productRef = 426034482B5EE05900F7BF0A /* CBORCoding */; };
 		42BFB9692AF0286A000C2CC7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9682AF0286A000C2CC7 /* LoginViewController.swift */; };
 		42BFB96A2AF0286A000C2CC7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9682AF0286A000C2CC7 /* LoginViewController.swift */; };
 		42BFB96D2AF040F4000C2CC7 /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96C2AF040F4000C2CC7 /* ConfigService.swift */; };
 		42BFB96E2AF040F4000C2CC7 /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96C2AF040F4000C2CC7 /* ConfigService.swift */; };
 		42BFB9702AF05E08000C2CC7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96F2AF05E08000C2CC7 /* AuthService.swift */; };
 		42BFB9712AF05E08000C2CC7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96F2AF05E08000C2CC7 /* AuthService.swift */; };
-		42BFB9742AF2938F000C2CC7 /* NabtoRTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */; };
-		42BFB9752AF2938F000C2CC7 /* NabtoRTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */; };
-		42BFB9782AFE58A3000C2CC7 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */; };
 		45022383759B3A4BBF3A7F7F /* Pods_NabtoEdgeWebviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */; };
 		6D04A6DB1E3F4C4800DD9F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */; };
 		6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
@@ -82,7 +85,6 @@
 		42BFB9682AF0286A000C2CC7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		42BFB96C2AF040F4000C2CC7 /* ConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigService.swift; sourceTree = "<group>"; };
 		42BFB96F2AF05E08000C2CC7 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NabtoRTC.swift; sourceTree = "<group>"; };
 		60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NabtoEdgeWebviewTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nabto Edge Webview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,9 +130,14 @@
 				6D04A7561E3F59BF00DD9F70 /* UIKit.framework in Frameworks */,
 				4236EDAE299E72210049A425 /* AssetsLibrary.framework in Frameworks */,
 				6D04A7481E3F57E900DD9F70 /* Foundation.framework in Frameworks */,
+				424C39822B600A44003DE01D /* NabtoEdgeClient in Frameworks */,
+				424C398B2B61058F003DE01D /* NabtoEdgeClientWebRTC in Frameworks */,
+				424C39882B610546003DE01D /* NabtoEdgeIamUtil in Frameworks */,
 				009A708D1F3434E15D73F5F5 /* Pods_Nabto_Edge_Webview.framework in Frameworks */,
+				426034492B5EE05900F7BF0A /* CBORCoding in Frameworks */,
+				426034462B5EE01300F7BF0A /* NabtoEdgeIamUtil in Frameworks */,
 				42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */,
-				42BFB9782AFE58A3000C2CC7 /* AsyncAlgorithms in Frameworks */,
+				424C39852B600A7F003DE01D /* NabtoEdgeIamUtil in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,14 +152,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		42BFB9722AF29371000C2CC7 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				42BFB9732AF2938F000C2CC7 /* NabtoRTC.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		6D04A6CE1E3F4C4800DD9F70 = {
 			isa = PBXGroup;
 			children = (
@@ -176,7 +175,6 @@
 		6D04A6D91E3F4C4800DD9F70 /* NabtoEdgeWebview */ = {
 			isa = PBXGroup;
 			children = (
-				42BFB9722AF29371000C2CC7 /* Components */,
 				6DC4A1CF1E40F766005B6CAD /* ViewControllers */,
 				6DC4A1E41E4101D3005B6CAD /* Services */,
 				6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */,
@@ -287,7 +285,12 @@
 			packageProductDependencies = (
 				42030BBD2AEF279800DE9FE2 /* AWSCognitoAuthPlugin */,
 				42030BBF2AEF279800DE9FE2 /* Amplify */,
-				42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */,
+				426034452B5EE01300F7BF0A /* NabtoEdgeIamUtil */,
+				426034482B5EE05900F7BF0A /* CBORCoding */,
+				424C39812B600A44003DE01D /* NabtoEdgeClient */,
+				424C39842B600A7F003DE01D /* NabtoEdgeIamUtil */,
+				424C39872B610546003DE01D /* NabtoEdgeIamUtil */,
+				424C398A2B61058F003DE01D /* NabtoEdgeClientWebRTC */,
 			);
 			productName = NabtoEdgeVideo;
 			productReference = 6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */;
@@ -325,7 +328,6 @@
 				TargetAttributes = {
 					6D04A6D61E3F4C4800DD9F70 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = E55K8RCV2E;
 						ProvisioningStyle = Automatic;
 					};
 					6D04A6EA1E3F4C4800DD9F70 = {
@@ -347,7 +349,10 @@
 			mainGroup = 6D04A6CE1E3F4C4800DD9F70;
 			packageReferences = (
 				42030BBC2AEF279800DE9FE2 /* XCRemoteSwiftPackageReference "amplify-swift" */,
-				42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
+				426034472B5EE05900F7BF0A /* XCRemoteSwiftPackageReference "CBORCoding" */,
+				424C39802B600A44003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift" */,
+				424C39862B610546003DE01D /* XCRemoteSwiftPackageReference "edge-iamutil-swift" */,
+				424C39892B61058F003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift-webrtc" */,
 			);
 			productRefGroup = 6D04A6D81E3F4C4800DD9F70 /* Products */;
 			projectDirPath = "";
@@ -387,27 +392,17 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-NabtoEdgeWebviewTests/Pods-NabtoEdgeWebviewTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
-				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeClientSwift/NabtoEdgeClient.framework/NabtoEdgeClient",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeIamUtil/NabtoEdgeIamUtil.framework/NabtoEdgeIamUtil",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC-lib/WebRTC.framework/WebRTC",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CBORCoding.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Half.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeIamUtil.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -465,27 +460,17 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Nabto Edge Webview/Pods-Nabto Edge Webview-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
-				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeClientSwift/NabtoEdgeClient.framework/NabtoEdgeClient",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeIamUtil/NabtoEdgeIamUtil.framework/NabtoEdgeIamUtil",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC-lib/WebRTC.framework/WebRTC",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CBORCoding.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Half.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeIamUtil.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -512,7 +497,6 @@
 				E92DFA06F9E1E0BBD1692EC9 /* EdgeConnectionManager.swift in Sources */,
 				E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */,
 				E920BF4ED2BF593C202BEC73 /* SettingsViewController.swift in Sources */,
-				42BFB9742AF2938F000C2CC7 /* NabtoRTC.swift in Sources */,
 				42BFB9692AF0286A000C2CC7 /* LoginViewController.swift in Sources */,
 				E923FA3A83FCB313501BA333 /* DeviceDetailsViewController.swift in Sources */,
 				42BFB96D2AF040F4000C2CC7 /* ConfigService.swift in Sources */,
@@ -539,7 +523,6 @@
 				E924551915F078D5573D2794 /* PairingViewController.swift in Sources */,
 				E92248EECE69F6EA40964931 /* CustomTableViewCells.swift in Sources */,
 				E922EC96B5E07D077263B6DB /* PairingConfirmedViewController.swift in Sources */,
-				42BFB9752AF2938F000C2CC7 /* NabtoRTC.swift in Sources */,
 				E92F9082DBA9B75261176A39 /* OverviewViewController.swift in Sources */,
 				E920D288C89CD29330CB4CD9 /* DiscoverViewController.swift in Sources */,
 				E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */,
@@ -686,7 +669,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = E55K8RCV2E;
+				DEVELOPMENT_TEAM = 455FKFTYQ2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CBORCoding\"",
@@ -734,7 +717,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = E55K8RCV2E;
+				DEVELOPMENT_TEAM = 455FKFTYQ2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CBORCoding\"",
@@ -863,12 +846,36 @@
 				minimumVersion = 2.21.1;
 			};
 		};
-		42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+		424C39802B600A44003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
+			repositoryURL = "https://github.com/nabto/edge-client-swift/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 3.2.1;
+			};
+		};
+		424C39862B610546003DE01D /* XCRemoteSwiftPackageReference "edge-iamutil-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nabto/edge-iamutil-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		424C39892B61058F003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift-webrtc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nabto/edge-client-swift-webrtc";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		426034472B5EE05900F7BF0A /* XCRemoteSwiftPackageReference "CBORCoding" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SomeRandomiOSDev/CBORCoding";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -884,10 +891,33 @@
 			package = 42030BBC2AEF279800DE9FE2 /* XCRemoteSwiftPackageReference "amplify-swift" */;
 			productName = Amplify;
 		};
-		42BFB9772AFE58A3000C2CC7 /* AsyncAlgorithms */ = {
+		424C39812B600A44003DE01D /* NabtoEdgeClient */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 42BFB9762AFE58A3000C2CC7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
-			productName = AsyncAlgorithms;
+			package = 424C39802B600A44003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift" */;
+			productName = NabtoEdgeClient;
+		};
+		424C39842B600A7F003DE01D /* NabtoEdgeIamUtil */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NabtoEdgeIamUtil;
+		};
+		424C39872B610546003DE01D /* NabtoEdgeIamUtil */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 424C39862B610546003DE01D /* XCRemoteSwiftPackageReference "edge-iamutil-swift" */;
+			productName = NabtoEdgeIamUtil;
+		};
+		424C398A2B61058F003DE01D /* NabtoEdgeClientWebRTC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 424C39892B61058F003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift-webrtc" */;
+			productName = NabtoEdgeClientWebRTC;
+		};
+		426034452B5EE01300F7BF0A /* NabtoEdgeIamUtil */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NabtoEdgeIamUtil;
+		};
+		426034482B5EE05900F7BF0A /* CBORCoding */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 426034472B5EE05900F7BF0A /* XCRemoteSwiftPackageReference "CBORCoding" */;
+			productName = CBORCoding;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

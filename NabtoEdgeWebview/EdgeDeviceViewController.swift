@@ -11,14 +11,16 @@ import NotificationBannerSwift
 import CBORCoding
 import NabtoEdgeClient
 import NabtoEdgeIamUtil
+import NabtoEdgeClientWebRTC
 import OSLog
 import WebKit
-import WebRTC
 
 class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
     private let cborEncoder: CBOREncoder = CBOREncoder()
-    private let rtc = NabtoRTC()
-    private var renderer: RTCMTLVideoView!
+    
+    private var peerConnection: EdgePeerConnection!
+    private var remoteTrack: EdgeVideoTrack!
+    private var renderer: EdgeMetalVideoView!
 
     @IBOutlet weak var settingsButton       : UIButton!
     @IBOutlet weak var connectingView       : UIView!
@@ -121,15 +123,42 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         super.viewDidLoad()
         self.busy = true
         
-        renderer = RTCMTLVideoView(frame: self.videoScreenView.frame)
+        renderer = EdgeMetalVideoView(frame: self.videoScreenView.frame)
         renderer.videoContentMode = .scaleAspectFit
+        renderer.embed(into: self.videoScreenView)
         
-        embedView(renderer, into: self.videoScreenView)
-        self.busy = false
-        
-        Task {
-            rtc.start(bookmark: self.device, renderer: renderer)
+        do {
+            let conn = try EdgeConnectionManager.shared.getConnection(self.device)
+            peerConnection = EdgeWebRTC.createPeerConnection(conn)
+            
+            peerConnection.onConnected = {
+                do {
+                    let trackInfo = """
+                        {"tracks": ["frontdoor-video", "frontdoor-audio"]}
+                    """
+                    let conn = try EdgeConnectionManager.shared.getConnection(self.device)
+                    let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/tracks")
+                    try coap.setRequestPayload(contentFormat: 50, data: trackInfo.data(using: .utf8)!)
+                    let coapResult = try coap.execute()
+                    if coapResult.status != 201 {
+                        self.showDeviceErrorMsg("Failed getting track info from device (coap code: \(coapResult.status)")
+                    }
+                } catch {
+                    print("Failed getting track info from device (\(error)")
+                }
+            }
+            
+            peerConnection.onTrack = { track in
+                if let track = track as? EdgeVideoTrack {
+                    self.remoteTrack = track
+                    self.remoteTrack.add(self.renderer)
+                }
+            }
+        } catch {
+            self.showDeviceErrorMsg("Could not start an RTC connection to devie \(error)")
         }
+        
+        self.busy = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -193,7 +222,6 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
 
     // MARK: - Reachability callbacks
     @objc func appMovedToBackground() {
-        rtc.stop()
         navigationController?.popToRootViewController(animated: false)
     }
     

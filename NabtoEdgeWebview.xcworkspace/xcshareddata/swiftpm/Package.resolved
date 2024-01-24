@@ -46,6 +46,51 @@
       }
     },
     {
+      "identity" : "cborcoding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/CBORCoding.git",
+      "state" : {
+        "revision" : "6fbd643c64cf6ef7a98391820c372d05fa9ed9ab",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "edge-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-client-swift/",
+      "state" : {
+        "revision" : "7e0c47a238e80629a1f4dbda63305189e602664a",
+        "version" : "3.2.1"
+      }
+    },
+    {
+      "identity" : "edge-client-swift-webrtc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-client-swift-webrtc",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ee70040ad70c69f2f3df94e06bd4732d14d2facb"
+      }
+    },
+    {
+      "identity" : "edge-iamutil-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-iamutil-swift",
+      "state" : {
+        "revision" : "64ce96e53971101b458d74058b4c4e18cdf3dffb",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "half",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/Half",
+      "state" : {
+        "revision" : "14b1ab35ffdf62c999ef1016ec0f8e745a6feed5",
+        "version" : "1.4.2"
+      }
+    },
+    {
       "identity" : "smithy-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/smithy-lang/smithy-swift",
@@ -75,7 +120,7 @@
     {
       "identity" : "swift-async-algorithms",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-async-algorithms.git",
+      "location" : "https://github.com/apple/swift-async-algorithms",
       "state" : {
         "revision" : "9cfed92b026c524674ed869a4ff2dcfdeedf8a2a",
         "version" : "0.1.0"
@@ -97,6 +142,15 @@
       "state" : {
         "revision" : "532d8b529501fb73a2455b179e0bbb6d49b652ed",
         "version" : "1.5.3"
+      }
+    },
+    {
+      "identity" : "webrtc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stasel/WebRTC.git",
+      "state" : {
+        "revision" : "3edaa8f0ddae889ad8ea236023de88672f6a16ec",
+        "version" : "120.0.0"
       }
     },
     {

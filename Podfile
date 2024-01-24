@@ -12,11 +12,8 @@ platform :ios, '12.0'
 
 def common
   use_frameworks!
-  pod 'NabtoEdgeClientSwift', '3.0.4'
-  pod 'NabtoEdgeIamUtil'
   pod 'NotificationBannerSwift', '~> 3.0.0'
   pod 'IQKeyboardManagerSwift'
-  pod 'WebRTC-lib'
 end
 
 target 'Nabto Edge Webview' do
