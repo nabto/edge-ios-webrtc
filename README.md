@@ -4,13 +4,9 @@ Example application that shows how you can use WebRTC with the Nabto Edge platfo
 
 ## Building
 
-The app installs dependencies through Cocoapods, so to build and run, perform the following steps:
-
-1. Install dependencies: `$ pod install` (see https://www.cocoapods.org for info on installation of the pod tool).
-
-2. Open the generated workspace in XCode and work from there: `open NabtoEdgeVideo.xcworkspace`
-
-3. Note that there is a known issue with running on iOS 17+ simulators; for now, use only on physical iOS devices
+Dependencies are installed through Swift Package Manager, so just open the XCode project and
+build. Note that there is a known issue with running on iOS 17+ simulators; for now, use only on
+physical iOS devices
 
 ## Questions?
 
@@ -18,9 +14,9 @@ In case of questions or problems, please write to support@nabto.com or contact u
 
 ## How to use
 
-Follow the guide to start and a device and a stream and pairing with it on <https://demo.smartcloud.nabto.com/>.
+Follow [the guide](https://github.com/nabto/edge-device-webrtc) to start a device and a stream. Then pair with it on <https://demo.smartcloud.nabto.com/>. This requires you to create a demo account.
 
-Once you have an account and a connected, paired device on the website, open this app. First it will request you to log in. Once you have logged in with the account you used on the website, you should see a list of devices. If your device is paired correctly it will show up on this list. Click on your device to see your stream. 
+Once you have an account and a connected, paired device on the website, open this app. First it will request you to log in. Once you have logged in with the account you used on the website, you should see a list of devices. If your device is paired correctly it will show up on this list. Click on your device to see your stream.
 
 ## Troubleshooting
 
@@ -52,4 +48,3 @@ SetProperty: RPC timeout. Apparently deadlocked. Aborting now.
     frame #13: 0x000000010b31ea90 WebRTC`___lldb_unnamed_symbol9818 + 92
     frame #14: 0x000000010b323104 WebRTC`___lldb_unnamed_symbol9915 + 72
 ```
-

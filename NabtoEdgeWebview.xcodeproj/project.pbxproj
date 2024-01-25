@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		009A708D1F3434E15D73F5F5 /* Pods_Nabto_Edge_Webview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 126D11F565C20E827BAB6FD4 /* Pods_Nabto_Edge_Webview.framework */; };
 		42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 42030BBD2AEF279800DE9FE2 /* AWSCognitoAuthPlugin */; };
 		42030BC02AEF279800DE9FE2 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = 42030BBF2AEF279800DE9FE2 /* Amplify */; };
 		4236EDAE299E72210049A425 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4236EDAD299E72210049A425 /* AssetsLibrary.framework */; };
@@ -23,7 +22,6 @@
 		42BFB96E2AF040F4000C2CC7 /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96C2AF040F4000C2CC7 /* ConfigService.swift */; };
 		42BFB9702AF05E08000C2CC7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96F2AF05E08000C2CC7 /* AuthService.swift */; };
 		42BFB9712AF05E08000C2CC7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BFB96F2AF05E08000C2CC7 /* AuthService.swift */; };
-		45022383759B3A4BBF3A7F7F /* Pods_NabtoEdgeWebviewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */; };
 		6D04A6DB1E3F4C4800DD9F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */; };
 		6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
 		6D04A6E01E3F4C4800DD9F70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D04A6DE1E3F4C4800DD9F70 /* Main.storyboard */; };
@@ -44,6 +42,8 @@
 		6DC4A1E11E40F9F1005B6CAD /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E01E40F9F1005B6CAD /* PairingViewController.swift */; };
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
 		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
+		D4C160D42B6156A000AFF857 /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4C160D32B6156A000AFF857 /* NotificationBannerSwift */; };
+		D4C160D72B61575200AFF857 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4C160D62B61575200AFF857 /* IQKeyboardManagerSwift */; };
 		E920BF4ED2BF593C202BEC73 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92CFE5D0CBAE893C601FF2F /* SettingsViewController.swift */; };
 		E920D288C89CD29330CB4CD9 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D91E40F8CB005B6CAD /* DiscoverViewController.swift */; };
 		E92248EECE69F6EA40964931 /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
@@ -76,16 +76,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		126D11F565C20E827BAB6FD4 /* Pods_Nabto_Edge_Webview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nabto_Edge_Webview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F9D2E967173336694101711 /* Pods-Nabto Edge Webview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nabto Edge Webview.release.xcconfig"; path = "Target Support Files/Pods-Nabto Edge Webview/Pods-Nabto Edge Webview.release.xcconfig"; sourceTree = "<group>"; };
-		38ACE60244CD232FE27564C7 /* Pods-NabtoEdgeWebviewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NabtoEdgeWebviewTests.debug.xcconfig"; path = "Target Support Files/Pods-NabtoEdgeWebviewTests/Pods-NabtoEdgeWebviewTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3984BC81D430E3673E4F53A3 /* Pods-Nabto Edge Webview.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nabto Edge Webview.debug.xcconfig"; path = "Target Support Files/Pods-Nabto Edge Webview/Pods-Nabto Edge Webview.debug.xcconfig"; sourceTree = "<group>"; };
-		418369131D7B7FFCF8F490C7 /* Pods-NabtoEdgeWebviewTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NabtoEdgeWebviewTests.release.xcconfig"; path = "Target Support Files/Pods-NabtoEdgeWebviewTests/Pods-NabtoEdgeWebviewTests.release.xcconfig"; sourceTree = "<group>"; };
 		4236EDAD299E72210049A425 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		42BFB9682AF0286A000C2CC7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		42BFB96C2AF040F4000C2CC7 /* ConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigService.swift; sourceTree = "<group>"; };
 		42BFB96F2AF05E08000C2CC7 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NabtoEdgeWebviewTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nabto Edge Webview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
@@ -132,9 +126,10 @@
 				6D04A7481E3F57E900DD9F70 /* Foundation.framework in Frameworks */,
 				424C39822B600A44003DE01D /* NabtoEdgeClient in Frameworks */,
 				424C398B2B61058F003DE01D /* NabtoEdgeClientWebRTC in Frameworks */,
+				D4C160D72B61575200AFF857 /* IQKeyboardManagerSwift in Frameworks */,
 				424C39882B610546003DE01D /* NabtoEdgeIamUtil in Frameworks */,
-				009A708D1F3434E15D73F5F5 /* Pods_Nabto_Edge_Webview.framework in Frameworks */,
 				426034492B5EE05900F7BF0A /* CBORCoding in Frameworks */,
+				D4C160D42B6156A000AFF857 /* NotificationBannerSwift in Frameworks */,
 				426034462B5EE01300F7BF0A /* NabtoEdgeIamUtil in Frameworks */,
 				42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */,
 				424C39852B600A7F003DE01D /* NabtoEdgeIamUtil in Frameworks */,
@@ -145,7 +140,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45022383759B3A4BBF3A7F7F /* Pods_NabtoEdgeWebviewTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +153,6 @@
 				6D04A6EE1E3F4C4800DD9F70 /* NabtoEdgeWebviewTests */,
 				6D04A6D81E3F4C4800DD9F70 /* Products */,
 				6D04A6FA1E3F50F700DD9F70 /* Frameworks */,
-				AA0321A961738372158382D1 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -205,8 +198,6 @@
 				6D04A7531E3F59BF00DD9F70 /* QuartzCore.framework */,
 				6D04A7541E3F59BF00DD9F70 /* UIKit.framework */,
 				6D04A7471E3F57E900DD9F70 /* Foundation.framework */,
-				126D11F565C20E827BAB6FD4 /* Pods_Nabto_Edge_Webview.framework */,
-				60B3B9F30465A67F31792960 /* Pods_NabtoEdgeWebviewTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -253,17 +244,6 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		AA0321A961738372158382D1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3984BC81D430E3673E4F53A3 /* Pods-Nabto Edge Webview.debug.xcconfig */,
-				1F9D2E967173336694101711 /* Pods-Nabto Edge Webview.release.xcconfig */,
-				38ACE60244CD232FE27564C7 /* Pods-NabtoEdgeWebviewTests.debug.xcconfig */,
-				418369131D7B7FFCF8F490C7 /* Pods-NabtoEdgeWebviewTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -271,11 +251,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6D04A6F41E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "Nabto Edge Webview" */;
 			buildPhases = (
-				A24CBFF16965FAE1449823DC /* [CP] Check Pods Manifest.lock */,
 				6D04A6D31E3F4C4800DD9F70 /* Sources */,
 				6D04A6D41E3F4C4800DD9F70 /* Frameworks */,
 				6D04A6D51E3F4C4800DD9F70 /* Resources */,
-				FE3FCDBC6D7D6136DD80510A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -291,6 +269,8 @@
 				424C39842B600A7F003DE01D /* NabtoEdgeIamUtil */,
 				424C39872B610546003DE01D /* NabtoEdgeIamUtil */,
 				424C398A2B61058F003DE01D /* NabtoEdgeClientWebRTC */,
+				D4C160D32B6156A000AFF857 /* NotificationBannerSwift */,
+				D4C160D62B61575200AFF857 /* IQKeyboardManagerSwift */,
 			);
 			productName = NabtoEdgeVideo;
 			productReference = 6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */;
@@ -300,11 +280,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6D04A6F71E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "NabtoEdgeWebviewTests" */;
 			buildPhases = (
-				F079587CC37B286788DF8046 /* [CP] Check Pods Manifest.lock */,
 				6D04A6E71E3F4C4800DD9F70 /* Sources */,
 				6D04A6E81E3F4C4800DD9F70 /* Frameworks */,
 				6D04A6E91E3F4C4800DD9F70 /* Resources */,
-				621A9C14AB34EB134275A0F8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -353,6 +331,8 @@
 				424C39802B600A44003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift" */,
 				424C39862B610546003DE01D /* XCRemoteSwiftPackageReference "edge-iamutil-swift" */,
 				424C39892B61058F003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift-webrtc" */,
+				D4C160D22B6156A000AFF857 /* XCRemoteSwiftPackageReference "NotificationBanner" */,
+				D4C160D52B61575200AFF857 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 6D04A6D81E3F4C4800DD9F70 /* Products */;
 			projectDirPath = "";
@@ -383,101 +363,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		621A9C14AB34EB134275A0F8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NabtoEdgeWebviewTests/Pods-NabtoEdgeWebviewTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NabtoEdgeWebviewTests/Pods-NabtoEdgeWebviewTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A24CBFF16965FAE1449823DC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Nabto Edge Webview-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F079587CC37B286788DF8046 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NabtoEdgeWebviewTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FE3FCDBC6D7D6136DD80510A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Nabto Edge Webview/Pods-Nabto Edge Webview-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Nabto Edge Webview/Pods-Nabto Edge Webview-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6D04A6D31E3F4C4800DD9F70 /* Sources */ = {
@@ -663,13 +548,12 @@
 		};
 		6D04A6F51E3F4C4800DD9F70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3984BC81D430E3673E4F53A3 /* Pods-Nabto Edge Webview.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 455FKFTYQ2;
+				DEVELOPMENT_TEAM = E55K8RCV2E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CBORCoding\"",
@@ -711,13 +595,12 @@
 		};
 		6D04A6F61E3F4C4800DD9F70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F9D2E967173336694101711 /* Pods-Nabto Edge Webview.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 455FKFTYQ2;
+				DEVELOPMENT_TEAM = E55K8RCV2E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CBORCoding\"",
@@ -759,7 +642,6 @@
 		};
 		6D04A6F81E3F4C4800DD9F70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38ACE60244CD232FE27564C7 /* Pods-NabtoEdgeWebviewTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -783,7 +665,6 @@
 		};
 		6D04A6F91E3F4C4800DD9F70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 418369131D7B7FFCF8F490C7 /* Pods-NabtoEdgeWebviewTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -878,6 +759,22 @@
 				minimumVersion = 1.4.0;
 			};
 		};
+		D4C160D22B6156A000AFF857 /* XCRemoteSwiftPackageReference "NotificationBanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Daltron/NotificationBanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.1;
+			};
+		};
+		D4C160D52B61575200AFF857 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -918,6 +815,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 426034472B5EE05900F7BF0A /* XCRemoteSwiftPackageReference "CBORCoding" */;
 			productName = CBORCoding;
+		};
+		D4C160D32B6156A000AFF857 /* NotificationBannerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C160D22B6156A000AFF857 /* XCRemoteSwiftPackageReference "NotificationBanner" */;
+			productName = NotificationBannerSwift;
+		};
+		D4C160D62B61575200AFF857 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C160D52B61575200AFF857 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
