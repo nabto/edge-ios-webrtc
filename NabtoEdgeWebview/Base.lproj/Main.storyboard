@@ -1487,6 +1487,9 @@ New devices can be added from the overview page: To add a device, your client (t
                                 <color key="textColor" systemColor="placeholderTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="7gM-us-xNR">
+                                <rect key="frame" x="29" y="342" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -1498,6 +1501,7 @@ New devices can be added from the overview page: To add a device, your client (t
                             <constraint firstItem="3ZH-mS-K2S" firstAttribute="leading" secondItem="Qhv-HZ-U1R" secondAttribute="leadingMargin" id="AEg-dx-icd"/>
                             <constraint firstItem="fzq-to-FoJ" firstAttribute="leading" secondItem="Qhv-HZ-U1R" secondAttribute="leadingMargin" id="C2O-W5-sXw"/>
                             <constraint firstItem="fzq-to-FoJ" firstAttribute="top" secondItem="3ZH-mS-K2S" secondAttribute="bottom" constant="48" id="E2a-3r-wSr"/>
+                            <constraint firstItem="7gM-us-xNR" firstAttribute="leading" secondItem="Qhv-HZ-U1R" secondAttribute="leadingMargin" constant="9" id="EKk-fN-3K8"/>
                             <constraint firstItem="vFg-hp-Ajj" firstAttribute="top" secondItem="zgG-Tb-Cop" secondAttribute="bottom" constant="8" symbolic="YES" id="HAy-QN-KaD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vFg-hp-Ajj" secondAttribute="trailing" id="Nni-X4-M6U"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O9F-jr-y0Y" secondAttribute="trailing" id="Pgr-XF-N9v"/>
@@ -1510,12 +1514,14 @@ New devices can be added from the overview page: To add a device, your client (t
                             <constraint firstAttribute="trailingMargin" secondItem="3ZH-mS-K2S" secondAttribute="trailing" id="iMg-Ep-4W2"/>
                             <constraint firstItem="3ZH-mS-K2S" firstAttribute="top" secondItem="Jl9-Wt-kDS" secondAttribute="bottom" constant="8" symbolic="YES" id="jCn-3y-1gG"/>
                             <constraint firstItem="Jl9-Wt-kDS" firstAttribute="leading" secondItem="Qhv-HZ-U1R" secondAttribute="leadingMargin" id="nSG-vD-BGV"/>
+                            <constraint firstItem="7gM-us-xNR" firstAttribute="top" secondItem="O9F-jr-y0Y" secondAttribute="bottom" constant="43" id="znu-Xt-SFU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="gtv-eT-oPV"/>
                     <connections>
                         <outlet property="passwordField" destination="O9F-jr-y0Y" id="NpR-un-Pza"/>
                         <outlet property="signinButton" destination="zgG-Tb-Cop" id="ubQ-4b-f7b"/>
+                        <outlet property="spinner" destination="7gM-us-xNR" id="zbT-z2-sfJ"/>
                         <outlet property="usernameField" destination="3ZH-mS-K2S" id="vb3-Rf-l3x"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="LoginToOverview" id="9rm-cy-4Gn"/>
                     </connections>

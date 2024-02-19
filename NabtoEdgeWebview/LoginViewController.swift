@@ -15,11 +15,16 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var signinButton: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     @IBAction func signinTapped(_ sender: Any) {
+        self.spinner.startAnimating()
         Task {
             await signIn(username: self.usernameField.text!,
                          password: self.passwordField.text!)
+            DispatchQueue.main.async {
+                 self.spinner.stopAnimating()
+             }
         }
     }
         
@@ -31,6 +36,7 @@ class LoginViewController: UIViewController {
                 )
             if signInResult.isSignedIn {
                 print("Sign in succeeded")
+                navigateToOverview()
             }
         } catch let error as AuthError {
             DispatchQueue.main.async {
@@ -43,6 +49,7 @@ class LoginViewController: UIViewController {
             banner.show()
             print("Unexpected error: \(error)")
         }
+        
     }
     
     override func viewDidLoad() {
