@@ -1463,19 +1463,22 @@ New devices can be added from the overview page: To add a device, your client (t
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3ZH-mS-K2S">
                                 <rect key="frame" x="20" y="154" width="390" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" textContentType="email"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O9F-jr-y0Y">
                                 <rect key="frame" x="20" y="265" width="390" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" keyboardType="alphabet" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgG-Tb-Cop">
                                 <rect key="frame" x="20" y="335" width="390" height="35"/>
                                 <color key="backgroundColor" red="0.91372549530000002" green="0.52549022440000004" blue="0.28627452250000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Sign in"/>
+                                <connections>
+                                    <action selector="signinTapped:" destination="8X3-kL-3sM" eventType="touchUpInside" id="SzA-00-gZh"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFg-hp-Ajj">
                                 <rect key="frame" x="20" y="378" width="390" height="46.666666666666686"/>
@@ -1511,6 +1514,9 @@ New devices can be added from the overview page: To add a device, your client (t
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="gtv-eT-oPV"/>
                     <connections>
+                        <outlet property="passwordField" destination="O9F-jr-y0Y" id="NpR-un-Pza"/>
+                        <outlet property="signinButton" destination="zgG-Tb-Cop" id="ubQ-4b-f7b"/>
+                        <outlet property="usernameField" destination="3ZH-mS-K2S" id="vb3-Rf-l3x"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="LoginToOverview" id="9rm-cy-4Gn"/>
                     </connections>
                 </viewController>

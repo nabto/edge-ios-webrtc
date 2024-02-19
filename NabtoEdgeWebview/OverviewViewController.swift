@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 import NabtoEdgeIamUtil
 import NabtoEdgeClient
-import NotificationBannerSwift
 import Amplify
 import AWSPluginsCore
 
