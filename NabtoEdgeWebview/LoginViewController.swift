@@ -8,6 +8,9 @@
 
 import UIKit
 import Amplify
+import Authenticator
+import AWSCognitoAuthPlugin
+import SwiftUI
 
 class LoginViewController: UIViewController {
 
@@ -24,11 +27,6 @@ class LoginViewController: UIViewController {
             }
             
             do {
-                let signInResult = try await Amplify.Auth.signInWithWebUI(presentationAnchor: self.view.window!)
-                if signInResult.isSignedIn {
-                    print("WebUI sign in successful!")
-                    navigateToOverview()
-                }
             } catch let error as AuthError {
                 print("Sign in failed: \(error)")
             } catch {
