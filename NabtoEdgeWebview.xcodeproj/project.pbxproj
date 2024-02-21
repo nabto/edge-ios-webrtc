@@ -42,6 +42,7 @@
 		6DC4A1E11E40F9F1005B6CAD /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E01E40F9F1005B6CAD /* PairingViewController.swift */; };
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
 		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
+		D47464452B838BD000492A70 /* Authenticator in Frameworks */ = {isa = PBXBuildFile; productRef = D47464442B838BD000492A70 /* Authenticator */; };
 		D4C160D42B6156A000AFF857 /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4C160D32B6156A000AFF857 /* NotificationBannerSwift */; };
 		D4C160D72B61575200AFF857 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D4C160D62B61575200AFF857 /* IQKeyboardManagerSwift */; };
 		E920BF4ED2BF593C202BEC73 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92CFE5D0CBAE893C601FF2F /* SettingsViewController.swift */; };
@@ -130,6 +131,7 @@
 				424C39882B610546003DE01D /* NabtoEdgeIamUtil in Frameworks */,
 				426034492B5EE05900F7BF0A /* CBORCoding in Frameworks */,
 				D4C160D42B6156A000AFF857 /* NotificationBannerSwift in Frameworks */,
+				D47464452B838BD000492A70 /* Authenticator in Frameworks */,
 				426034462B5EE01300F7BF0A /* NabtoEdgeIamUtil in Frameworks */,
 				42030BBE2AEF279800DE9FE2 /* AWSCognitoAuthPlugin in Frameworks */,
 				424C39852B600A7F003DE01D /* NabtoEdgeIamUtil in Frameworks */,
@@ -271,6 +273,7 @@
 				424C398A2B61058F003DE01D /* NabtoEdgeClientWebRTC */,
 				D4C160D32B6156A000AFF857 /* NotificationBannerSwift */,
 				D4C160D62B61575200AFF857 /* IQKeyboardManagerSwift */,
+				D47464442B838BD000492A70 /* Authenticator */,
 			);
 			productName = NabtoEdgeVideo;
 			productReference = 6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Webview.app */;
@@ -316,7 +319,7 @@
 				};
 			};
 			buildConfigurationList = 6D04A6D21E3F4C4800DD9F70 /* Build configuration list for PBXProject "NabtoEdgeWebview" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -333,6 +336,7 @@
 				424C39892B61058F003DE01D /* XCRemoteSwiftPackageReference "edge-client-swift-webrtc" */,
 				D4C160D22B6156A000AFF857 /* XCRemoteSwiftPackageReference "NotificationBanner" */,
 				D4C160D52B61575200AFF857 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				D47464432B838BD000492A70 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */,
 			);
 			productRefGroup = 6D04A6D81E3F4C4800DD9F70 /* Products */;
 			projectDirPath = "";
@@ -585,7 +589,7 @@
 					"-lc++",
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.webview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.webrtc2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
@@ -633,7 +637,7 @@
 					"-lc++",
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.webview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.webrtc2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
@@ -761,6 +765,14 @@
 				minimumVersion = 1.4.0;
 			};
 		};
+		D47464432B838BD000492A70 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-ui-swift-authenticator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		D4C160D22B6156A000AFF857 /* XCRemoteSwiftPackageReference "NotificationBanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Daltron/NotificationBanner";
@@ -817,6 +829,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 426034472B5EE05900F7BF0A /* XCRemoteSwiftPackageReference "CBORCoding" */;
 			productName = CBORCoding;
+		};
+		D47464442B838BD000492A70 /* Authenticator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D47464432B838BD000492A70 /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */;
+			productName = Authenticator;
 		};
 		D4C160D32B6156A000AFF857 /* NotificationBannerSwift */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -8,9 +8,50 @@
 
 import UIKit
 import Amplify
+import NotificationBannerSwift
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var usernameField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var signinButton: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
+    @IBAction func signinTapped(_ sender: Any) {
+        self.spinner.startAnimating()
+        Task {
+            await signIn(username: self.usernameField.text!,
+                         password: self.passwordField.text!)
+            DispatchQueue.main.async {
+                 self.spinner.stopAnimating()
+             }
+        }
+    }
+        
+    func signIn(username: String, password: String) async {
+        do {
+            let signInResult = try await Amplify.Auth.signIn(
+                username: username,
+                password: password
+                )
+            if signInResult.isSignedIn {
+                print("Sign in succeeded")
+                navigateToOverview()
+            }
+        } catch let error as AuthError {
+            DispatchQueue.main.async {
+                let banner = GrowingNotificationBanner(title: "Sign in error",  subtitle: error.errorDescription, style: .danger)
+                banner.show()
+                print("Sign in failed - \(error)")
+            }
+        } catch {
+            let banner = GrowingNotificationBanner(title: "Unexpected error",  subtitle: "\(error)", style: .danger)
+            banner.show()
+            print("Unexpected error: \(error)")
+        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -22,18 +63,6 @@ class LoginViewController: UIViewController {
                 navigateToOverview()
                 return
             }
-            
-            do {
-                let signInResult = try await Amplify.Auth.signInWithWebUI(presentationAnchor: self.view.window!)
-                if signInResult.isSignedIn {
-                    print("WebUI sign in successful!")
-                    navigateToOverview()
-                }
-            } catch let error as AuthError {
-                print("Sign in failed: \(error)")
-            } catch {
-                print("Unexpected error in WebUI sign in: \(error)")
-            }
         }
     }
    
@@ -42,8 +71,12 @@ class LoginViewController: UIViewController {
             let session = try await Amplify.Auth.fetchAuthSession()
             return session.isSignedIn
         } catch let error as AuthError {
+            let banner = GrowingNotificationBanner(title: "Session resume error",  subtitle: error.errorDescription, style: .danger)
+            banner.show()
             print("Fetch session failed with error \(error)")
         } catch {
+            let banner = GrowingNotificationBanner(title: "Unexpected error",  subtitle: "\(error)", style: .danger)
+            banner.show()
             print("Unexpected error: \(error)")
         }
         return false

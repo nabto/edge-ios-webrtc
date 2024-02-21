@@ -2,19 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>myapp</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Edge Video</string>
+	<string>Nabto WebRTC Video</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,6 +18,15 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>myapp</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -37,8 +37,12 @@
 	<array>
 		<string>_nabto._udp</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>The app uses a 3rd party library for showing the video stream. This 3rd party library includes code for accessing the iOS device's camera. The camera features are not used in the app, but this notice is necessary due to the inclusion of the library.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Discover and connect to local Nabto Edge devices to retrieve public device information</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The app uses a microphone to show two-way communication with an Edge-enabled device (such as a doorbell).</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -60,9 +64,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>The app uses a microphone to show two-way communication with an Edge-enabled device (such as a doorbell).</string>
-	<key>NSCameraUsageDescription</key>
-	<string>The app uses a 3rd party library for showing the video stream. This 3rd party library includes code for accessing the iOS device&apos;s camera. The camera features are not used in the app, but this notice is necessary due to the inclusion of the library.</string>
 </dict>
 </plist>
