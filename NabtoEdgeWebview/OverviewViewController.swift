@@ -185,7 +185,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 if let devs = try? JSONDecoder().decode([CloudDevice].self, from: data) {
                     let bookmarks = devs.map {
-                        Bookmark(deviceId: $0.nabtoDeviceId, productId: $0.nabtoProductId, sct: $0.nabtoSct)
+                        Bookmark(deviceId: $0.nabtoDeviceId, productId: $0.nabtoProductId, sct: $0.nabtoSct, name: $0.name)
                     }
                     for b in bookmarks {
                         self.devices.append(DeviceRowModel(bookmark: b))
