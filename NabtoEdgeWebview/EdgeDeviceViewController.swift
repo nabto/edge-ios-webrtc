@@ -20,7 +20,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
     
     private var peerConnection: EdgePeerConnection!
     private var remoteTrack: EdgeVideoTrack!
-    private var renderer: EdgeMetalVideoView!
+    private var videoView: EdgeMetalVideoView!
 
     @IBOutlet weak var settingsButton       : UIButton!
     @IBOutlet weak var connectingView       : UIView!
@@ -119,41 +119,45 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         }
     }
 
+    func openVideoStream() throws {
+        let conn = try EdgeConnectionManager.shared.getConnection(self.device)
+        peerConnection = EdgeWebRTC.createPeerConnection(conn)
+        
+        peerConnection.onConnected = {
+            do {
+                let trackInfo = """
+                    {"tracks": ["frontdoor-video", "frontdoor-audio"]}
+                    """
+                let conn = try EdgeConnectionManager.shared.getConnection(self.device)
+                let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/tracks")
+                try coap.setRequestPayload(contentFormat: 50, data: trackInfo.data(using: .utf8)!)
+                let coapResult = try coap.execute()
+                if coapResult.status != 201 {
+                    self.showDeviceErrorMsg("Failed getting track info from device (coap code: \(coapResult.status)")
+                }
+            } catch {
+                print("Failed getting track info from device (\(error)")
+            }
+        }
+        
+        peerConnection.onTrack = { track in
+            if let track = track as? EdgeVideoTrack {
+                self.remoteTrack = track
+                self.remoteTrack.add(self.videoView)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.busy = true
         
-        renderer = EdgeMetalVideoView(frame: self.videoScreenView.frame)
-        renderer.videoContentMode = .scaleAspectFit
-        renderer.embed(into: self.videoScreenView)
+        videoView = EdgeMetalVideoView(frame: self.videoScreenView.frame)
+        videoView.videoContentMode = .scaleAspectFit
+        videoView.embed(into: self.videoScreenView)
         
         do {
-            let conn = try EdgeConnectionManager.shared.getConnection(self.device)
-            peerConnection = EdgeWebRTC.createPeerConnection(conn)
-            
-            peerConnection.onConnected = {
-                do {
-                    let trackInfo = """
-                        {"tracks": ["frontdoor-video", "frontdoor-audio"]}
-                    """
-                    let conn = try EdgeConnectionManager.shared.getConnection(self.device)
-                    let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/tracks")
-                    try coap.setRequestPayload(contentFormat: 50, data: trackInfo.data(using: .utf8)!)
-                    let coapResult = try coap.execute()
-                    if coapResult.status != 201 {
-                        self.showDeviceErrorMsg("Failed getting track info from device (coap code: \(coapResult.status)")
-                    }
-                } catch {
-                    print("Failed getting track info from device (\(error)")
-                }
-            }
-            
-            peerConnection.onTrack = { track in
-                if let track = track as? EdgeVideoTrack {
-                    self.remoteTrack = track
-                    self.remoteTrack.add(self.renderer)
-                }
-            }
+            try openVideoStream()
         } catch {
             self.showDeviceErrorMsg("Could not start an RTC connection to devie \(error)")
         }
