@@ -171,6 +171,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        peerConnection.close()
         NotificationCenter.default
                 .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
         NotificationCenter.default
