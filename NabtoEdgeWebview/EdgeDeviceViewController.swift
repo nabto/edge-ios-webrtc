@@ -119,7 +119,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         }
     }
 
-    func openVideoStream() throws {
+    func openVideoStream() async throws {
         let conn = try EdgeConnectionManager.shared.getConnection(self.device)
         peerConnection = EdgeWebRTC.createPeerConnection(conn)
         
@@ -146,6 +146,12 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
                 self.remoteTrack.add(self.videoView)
             }
         }
+        
+        peerConnection.onError = { error in
+            self.showDeviceErrorMsg("Edge WebRTC error: \(error)")
+        }
+        
+        try await peerConnection.connect()
     }
     
     override func viewDidLoad() {
@@ -156,13 +162,14 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         videoView.videoContentMode = .scaleAspectFit
         videoView.embed(into: self.videoScreenView)
         
-        do {
-            try openVideoStream()
-        } catch {
-            self.showDeviceErrorMsg("Could not start an RTC connection to devie \(error)")
+        Task {
+            do {
+                try await openVideoStream()
+                self.busy = false
+            } catch {
+                self.showDeviceErrorMsg("Could not start an RTC connection to device \(error)")
+            }
         }
-        
-        self.busy = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
