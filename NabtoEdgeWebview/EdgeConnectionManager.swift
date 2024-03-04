@@ -13,7 +13,7 @@ public enum DeviceError : Error {
 }
 
 fileprivate class EdgeConnectionWrapper : ConnectionEventReceiver {
-    var isClosed: Bool = false
+    var isClosed: Bool = false  
     let target: Bookmark
     let connection: Connection
 

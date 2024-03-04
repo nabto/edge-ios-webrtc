@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         let data = configuration.data(using: .utf8)!
         let jsonDecoder = JSONDecoder()
-        EdgeWebRTC.setLogLevel(.verbose)
+        EdgeWebRTC.setLogLevel(.info)
         
         do {
             let conf = try jsonDecoder.decode(AmplifyConfiguration.self, from: data)
