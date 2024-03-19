@@ -121,24 +121,7 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
 
     func openVideoStream() async throws {
         let conn = try EdgeConnectionManager.shared.getConnection(self.device)
-        peerConnection = EdgeWebRTC.createPeerConnection(conn)
-        
-        peerConnection.onConnected = {
-            do {
-                let trackInfo = """
-                    {"tracks": ["frontdoor-video", "frontdoor-audio"]}
-                    """
-                let conn = try EdgeConnectionManager.shared.getConnection(self.device)
-                let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/tracks")
-                try coap.setRequestPayload(contentFormat: 50, data: trackInfo.data(using: .utf8)!)
-                let coapResult = try coap.execute()
-                if coapResult.status != 201 {
-                    self.showDeviceErrorMsg("Failed getting track info from device (coap code: \(coapResult.status)")
-                }
-            } catch {
-                print("Failed getting track info from device (\(error)")
-            }
-        }
+        peerConnection = EdgeWebrtc.createPeerConnection(conn)
         
         peerConnection.onTrack = { track in
             if let track = track as? EdgeVideoTrack {
@@ -152,6 +135,21 @@ class EdgeDeviceViewController: DeviceDetailsViewController, WKUIDelegate {
         }
         
         try await peerConnection.connect()
+        
+        do {
+            let trackInfo = """
+                {"tracks": ["frontdoor-video", "frontdoor-audio"]}
+                """
+            let conn = try EdgeConnectionManager.shared.getConnection(self.device)
+            let coap = try conn.createCoapRequest(method: "POST", path: "/webrtc/tracks")
+            try coap.setRequestPayload(contentFormat: 50, data: trackInfo.data(using: .utf8)!)
+            let coapResult = try coap.execute()
+            if coapResult.status != 201 {
+                self.showDeviceErrorMsg("Failed getting track info from device (coap code: \(coapResult.status)")
+            }
+        } catch {
+            print("Failed getting track info from device (\(error)")
+        }
     }
     
     override func viewDidLoad() {
